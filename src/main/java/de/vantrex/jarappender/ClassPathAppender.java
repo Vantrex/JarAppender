@@ -19,7 +19,7 @@ public interface ClassPathAppender<T> {
     /**
      * Provides the classloader
      *
-     * @param classLoader
+     * @param classLoader The {@link URLClassLoader classloader} we want to provide
      */
     void setClassLoader(URLClassLoader classLoader);
 
