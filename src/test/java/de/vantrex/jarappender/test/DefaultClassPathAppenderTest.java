@@ -3,9 +3,12 @@ package de.vantrex.jarappender.test;
 import de.vantrex.jarappender.JarAppender;
 import de.vantrex.jarappender.test.util.LibraryRepository;
 import de.vantrex.jarappender.test.util.StringUtil;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 
@@ -32,8 +35,7 @@ public class DefaultClassPathAppenderTest {
                 version
         );
         final File file = new File("test.jar");
-        if (file.exists())
-            file.delete();
+
         try {
             final byte[] data = LibraryRepository.MAVEN_CENTRAL.download(path);
             Files.write(file.toPath(), data);
@@ -46,9 +48,12 @@ public class DefaultClassPathAppenderTest {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         } finally {
-            file.delete();
+            System.out.println("deleting file");
         }
     }
-
-
+    @BeforeAll
+    public static void deleteTestJar() {
+        final File file = new File("test.jar");
+        file.delete();
+    }
 }
