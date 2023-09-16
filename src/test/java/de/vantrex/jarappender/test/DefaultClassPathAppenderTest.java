@@ -34,7 +34,6 @@ public class DefaultClassPathAppenderTest {
         final File file = new File("test.jar");
         if (file.exists())
             file.delete();
-        file.deleteOnExit();
         try {
             final byte[] data = LibraryRepository.MAVEN_CENTRAL.download(path);
             Files.write(file.toPath(), data);
@@ -46,6 +45,8 @@ public class DefaultClassPathAppenderTest {
             Class.forName("it.unimi.dsi.fastutil.Arrays");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
+        } finally {
+            file.delete();
         }
     }
 
