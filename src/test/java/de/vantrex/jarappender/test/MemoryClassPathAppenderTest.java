@@ -39,6 +39,11 @@ public class MemoryClassPathAppenderTest {
             classPathAppender.setClassLoader((URLClassLoader) MemoryClassPathAppender.class.getClassLoader());
             appender.setAppender(classPathAppender);
             appender.addJarToClassPath(data);
+            try {
+                Class.forName("org.yaml.snakeyaml.Yaml");
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -99,10 +99,11 @@ public class MemoryClassPathAppender implements ClassPathAppender<byte[]> {
         final URL url;
         try {
             final String uniqueId = UUID.randomUUID().toString();
-            url = new URL("x-buffer", null, -1, String.format("/%s/", uniqueId), new URLStreamHandler() {
+            url = new URL("x-buffer", null, -1, "/" + uniqueId + "/", new URLStreamHandler() {
                 protected URLConnection openConnection(URL u) throws IOException {
-                    final byte[] data = pathMap.get(u.getFile());
-                    if (data == null) throw new FileNotFoundException(u.getFile());
+                    String filePath = u.getFile().substring(uniqueId.length() + 1);
+                    final byte[] data = pathMap.get(filePath);
+                    if (data == null) throw new FileNotFoundException(filePath);
                     return new URLConnection(u) {
                         public void connect() throws IOException {
                         }
