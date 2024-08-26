@@ -21,6 +21,7 @@ import java.net.URLStreamHandler;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
@@ -97,7 +98,8 @@ public class MemoryClassPathAppender implements ClassPathAppender<byte[]> {
     private static URL createUrl(Map<String, byte[]> pathMap) {
         final URL url;
         try {
-            url = new URL("x-buffer", null, -1, "/", new URLStreamHandler() {
+            final String uniqueId = UUID.randomUUID().toString();
+            url = new URL("x-buffer", null, -1, String.format("/%s/", uniqueId), new URLStreamHandler() {
                 protected URLConnection openConnection(URL u) throws IOException {
                     final byte[] data = pathMap.get(u.getFile());
                     if (data == null) throw new FileNotFoundException(u.getFile());
